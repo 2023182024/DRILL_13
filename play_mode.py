@@ -7,6 +7,7 @@ from grass import Grass
 
 paused = False
 pause_font = None
+status_font = None
 inventory_open = False
 inventory_image = None
 
@@ -42,11 +43,12 @@ def handle_events():
 
 
 def init():
-    global boy, paused, pause_font, inventory_open, inventory_image
+    global boy, paused, pause_font, status_font, inventory_open, inventory_image
 
     paused = False
     inventory_open = False
     pause_font = load_font('C:/Windows/Fonts/arial.ttf', 36)
+    status_font = load_font('C:/Windows/Fonts/arial.ttf', 24)
     inventory_image = load_image('item_select.png')
 
     boy = Boy()
@@ -65,6 +67,11 @@ def update():
 def render():
     clear_canvas()
     game_world.render()
+
+    ball_names = {0: 'None', 1: 'Small Fireball', 2: 'Large Fireball'}
+    equipped_ball = ball_names.get(boy.equipped_ball, 'Unknown')
+    status_font.draw(20, 570, f'Equipped: {equipped_ball}', (255, 255, 255))
+
     if paused:
         draw_rectangle(250, 250, 550, 350)
         pause_font.draw(310, 285, 'PAUSED', (255, 255, 255))
